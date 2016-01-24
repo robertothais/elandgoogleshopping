@@ -1,5 +1,7 @@
 require 'dalli'
 
+require './fetcher'
+
 cache = Dalli::Client.new((ENV["MEMCACHIER_SERVERS"] || 'localhost:11211').split(","),
   {:username => ENV["MEMCACHIER_USERNAME"],
    :password => ENV["MEMCACHIER_PASSWORD"],
@@ -9,13 +11,13 @@ cache = Dalli::Client.new((ENV["MEMCACHIER_SERVERS"] || 'localhost:11211').split
   }
 )
 
-
 get '/fetch' do
-  cache.set("foo", Time.now.to_s)
-  cache.get("foo")
+  fetcher = Fetcher.new
+  fetcher.fetch!
+  cache.set('feed', fetcher.to_feed)
+  'ok'
 end
 
 get '/feed.xml' do
-
-
+  cache.get('feed')
 end
