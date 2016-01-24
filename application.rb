@@ -19,5 +19,6 @@ get '/fetch' do
 end
 
 get '/feed.xml' do
+  content_type 'text/xml'
   cache.get('feed')
 end
