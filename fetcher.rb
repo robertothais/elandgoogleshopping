@@ -141,7 +141,7 @@ class Product
   end
 
   def split(string)
-    out = string.split(" | ")
+    out = string.split("|")
     if out.length < 2
       out = string.split(" l ")
     end
